@@ -1,3 +1,10 @@
+section .data
+    msg db 'displaying 9 stars', 0xa ; msg
+    len equ $ - msg ;len
+
+    len2 equ 9 ;len
+    msg2 times len2 db '*'
+
 segment .text
     global _start
 
@@ -17,9 +24,3 @@ _start:     ; linker entry point
     mov eax,1 ;sys_exit
     int 0x80 ;call kernel
 
-section .data
-    msg db 'displaying 9 stars', 0xa ; msg
-    len equ $ - msg ;len
-
-    len2 equ 9 ;len
-    msg2 times len2 db '*'
