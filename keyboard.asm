@@ -5,7 +5,6 @@ section .data
     numsize equ 10
     userMsg db 'Enter upto 10 chars: '  ; sdf
 
-
 section .bss
     num resb 10
 
