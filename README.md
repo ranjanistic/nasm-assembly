@@ -1,4 +1,4 @@
-# Assembly basics
+# NASM Assembly basics
 
 ## Prerequisites
 
