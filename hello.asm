@@ -1,4 +1,4 @@
-section .text
+segment .text
     global _start
 
 _start:             ; linker entry point
@@ -11,6 +11,6 @@ _start:             ; linker entry point
     mov eax,1   ; sys_exit
     int 0x80        ; call kernel
 
-section .data
+segment .data
 msg db 'Hello, World!', 0xA  ; string to print
 len equ $ - msg          ; length of the string
