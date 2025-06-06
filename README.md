@@ -31,7 +31,6 @@ Processor registers
     Data registers to store data and perform arithmetic operations
 
     ```plaintext
-
     AX -> AL (low) + AH (high) -> 8 bit + 8 bit (accumulator)
     BX -> BL + BH -> 8 bit + 8 bit (base)
     CX -> CL + CH -> 8 bit + 8 bit (count)
@@ -119,4 +118,17 @@ mov eax,2 ; (sys_fork)
 mov eax,1 ; (sys_exit)
 
 int 0x80 ; call kernel
+```
+
+## Variable Directives
+
+```plaintext
+db ; define byte (1 bit)
+dw ; define word (16 bit)
+dd ; define double word (32 bit)
+dq ; define quad word (64 bit)
+resb 1 ; reserve byte
+resw 1 ; reserve word
+resd 1 ; reserve double word
+resq 1 ; reserve quad word
 ```
