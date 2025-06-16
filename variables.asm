@@ -6,55 +6,49 @@ section .data
     choicesize equ $-choice
     
     buffer times 6 db 0 
-    number dw 12345
-    numsize equ $-number
-    neg_number	dw	-12345
-    big_number	dq	123456789
-    real_number1	dd	1.234
-    real_number2	dq	123.456
+    number dd 12345        ; full 32-bit
 
 section .text
-    global _start    ; entry point
+    global _start
 
 _start:
-    mov	edx,size
-    mov	ecx, array
-    mov	ebx,1	
-    mov	eax,4	;(sys_write)
-    int	0x80	;call kernel
+    ; Print array
+    mov edx, size
+    mov ecx, array
+    mov ebx, 1
+    mov eax, 4
+    int 0x80
 
-    mov edx,choicesize
-    mov ecx,choice
-    mov ebx,1   ; stdout
-    mov eax,4   ; sys_write
-    int 80h ;kernel call
-    
-    mov ax, [number]   ; get the number
-    mov cx, 0          ; digit count
-    mov bx, 10         ; divisor
-    lea di, [buffer + 5]
+    ; Print choice
+    mov edx, choicesize
+    mov ecx, choice
+    mov ebx, 1
+    mov eax, 4
+    int 0x80
+
+    ; Convert number to string
+    mov eax, [number]   
+    mov ecx, 0          
+    mov ebx, 10         
+    lea edi, [buffer + 5] ; 32-bit register
 
 next_digit:
-    xor dx, dx  ; Clear DX (high byte of AX, used for division remainder)
-    div bx             ; AX ÷ 10, result in AX, remainder in DX
-    add dl, '0'        ; convert digit to ASCII
-    dec di
-    mov [di], dl
-    inc cx
-    test ax, ax
-    jnz next_digit  ; jump if not zero
+    xor edx, edx        
+    div ebx             ; EAX ÷ 10, quotient in EAX, remainder in EDX
+    add dl, '0'        
+    dec edi
+    mov [edi], dl
+    inc ecx
+    test eax, eax
+    jnz next_digit
 
-    mov edx,0
-    mov ecx,number
-    mov ebx,1   ; stdout
-    mov eax,4   ; sys_write
-    int 80h ;kernel call
-    
-    ; mov edx,6
-    ; mov ecx,neg_number
-    ; mov ebx,1   ; stdout
-    ; mov eax,4   ; sys_write
-    ; int 80h ;kernel call
+    ; Print converted number
+    mov edx, ecx
+    mov ecx, edi
+    mov ebx, 1
+    mov eax, 4
+    int 0x80
 
-    mov eax,1 ;sys_exit
-    int 0x80 ; or 80h
+    ; Exit
+    mov eax, 1
+    int 0x80
